@@ -69,4 +69,42 @@ def target_density(x):
 # Define the prior distribution that we will start with (a standard normal distribution)
 prior = torch.distributions.MultivariateNormal(torch.zeros(2), torch.eye(2))
 
-# How do I now train the above flow?
+# Train the above flow model:
+# 1. Sample from the prior distribution
+# 2. Transform the samples using the flow model
+# 3. Compute the log probability of the transformed samples under the target distribution
+# 4. Compute the log probability of the transformed samples under the prior distribution
+# 5. Compute the loss as the difference between the log probabilities of the transformed samples under the target and prior distributions
+# 6. Backpropagate the loss to update the parameters of the flow model
+def train():
+    # Define the flow model
+    flow_model = ContinuousNormalizingFlow(num_steps=100, input_dim=2, hidden_dim=32)
+    
+    # Define the optimizer
+    optimizer = torch.optim.Adam(flow_model.parameters(), lr=1e-3)
+    
+    # Train the model for 1000 epochs
+    for epoch in range(1000):
+        # Sample from the prior distribution
+        x = prior.sample((1000,))
+        
+        # Transform the samples using the flow model
+        z, log_det = flow_model(x)
+        
+        # Compute the log probability of the transformed samples under the target distribution
+        log_pz = torch.log(target_density(z))
+        
+        # Compute the log probability of the transformed samples under the prior distribution
+        log_qz = prior.log_prob(z)
+        
+        # Compute the loss as the difference between the log probabilities of the transformed samples under the target and prior distributions
+        loss = -torch.mean(log_pz + log_det - log_qz)
+        
+        # Backpropagate the loss to update the parameters of the flow model
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+        
+        # Print the loss every 100 epochs
+        if epoch % 100 == 0:
+            print('Epoch: {}, Loss: {}'.format(epoch, loss.item()))
