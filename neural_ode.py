@@ -54,6 +54,7 @@ t = torch.linspace(0.0, 1.0, 100).to(device)
 # Define the training loop
 # Train a continuous flow model to generate spectra from noise
 def train(model, optimizer, n_epochs, batch_size):
+    best_loss = 1e10
     for epoch in range(n_epochs):
         epoch_loss = 0
         for targets in targetloader:
@@ -65,6 +66,9 @@ def train(model, optimizer, n_epochs, batch_size):
             optimizer.step()
             epoch_loss += loss.item()
         print(f"Epoch {epoch+1} loss: {epoch_loss/len(targetloader)*batch_size}")
+        if epoch_loss/len(targetloader)*batch_size < best_loss:
+            best_loss = epoch_loss/len(targetloader)*batch_size
+            torch.save(model.state_dict(), "best_model.pth")
 
 # Generate new samples: samples are newly generated spectra from trained model
 # dz_evolution is the evolution of an initial noise vector into the generated spectra
@@ -74,11 +78,9 @@ def generate_samples(model, t, n_samples):
         samples = dz_evolution[-1]
     return dz_evolution, samples
 
-if m__name__ == "__main__":
+if __name__ == "__main__":
     # Initialize the model and optimizer
     ode_func = ODEFunc().to(device)
     optimizer = torch.optim.Adam(ode_func.parameters(), lr=1e-3)
     # Train the model
     train(ode_func, optimizer, n_epochs=100, batch_size=64)
-    # Save the model
-    torch.save(ode_func.state_dict(), "my_model.pth")
