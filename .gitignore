@@ -1,0 +1,7 @@
+.ipynb_checkpoints 
+literature
+__pycache__
+spectra.p
+saved_model
+my_model.pth
+.DS_Store
