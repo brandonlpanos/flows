@@ -74,10 +74,11 @@ def generate_samples(model, t, n_samples):
         samples = dz_evolution[-1]
     return dz_evolution, samples
 
-# Initialize the model and optimizer
-ode_func = ODEFunc().to(device)
-optimizer = torch.optim.Adam(ode_func.parameters(), lr=1e-3)
-# Train the model
-train(ode_func, optimizer, n_epochs=100, batch_size=64)
-# Save the model
-torch.save(ode_func.state_dict(), "my_model.pth")
+if m__name__ == "__main__":
+    # Initialize the model and optimizer
+    ode_func = ODEFunc().to(device)
+    optimizer = torch.optim.Adam(ode_func.parameters(), lr=1e-3)
+    # Train the model
+    train(ode_func, optimizer, n_epochs=100, batch_size=64)
+    # Save the model
+    torch.save(ode_func.state_dict(), "my_model.pth")
