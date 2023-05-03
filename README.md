@@ -1,1 +1,4 @@
-<iframe width="560" height="315" src="https://www.dropbox.com/s/eb0ik34xvpfpay3/movie1.mp4?dl=0)" frameborder="0" allowfullscreen></iframe>
+<video width="560" height="315" controls>
+  <source src="https://github.com/brandonlpanos/flows/blob/main/assets/movie3.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
