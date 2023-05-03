@@ -6,3 +6,5 @@ saved_model
 my_model.pth
 .DS_Store
 figs
+backup
+temp
