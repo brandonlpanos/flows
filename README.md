@@ -1,4 +1,6 @@
 
 
-https://user-images.githubusercontent.com/26824641/235938138-387c650a-3dd6-400a-9ac0-643f371eeb54.mp4
-
+<p float="left">
+  <img src="/assets/concentric_circles.gif" width="400" />
+  <img src="/assets/two_moons.gif" width="400" /> 
+</p>
